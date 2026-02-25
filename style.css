@@ -1,0 +1,183 @@
+    * {
+        box-sizing: border-box;
+        font-family: '맑은 고딕', sans-serif;
+    }
+    body {
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+    header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .font-selector {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .font-button {
+        padding: 5px 10px;
+        margin: 0 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .font-button.active {
+        background-color: #bbb;
+    }
+    .main-container {
+        display: flex;
+        flex: 1;
+        height: calc(100vh - 160px);
+        gap: 20px;
+    }
+    .sidebar {
+        width: 180px;
+        overflow-y: auto;
+        border-right: 1px solid #ddd;
+        padding-right: 10px;
+    }
+    .book-button {
+        width: 50px;
+        height: 35px;
+        margin: 3px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+    }
+    .book-button.old {
+        background-color: #e6f0ff;
+    }
+    .book-button.new {
+        background-color: #ffe6e6;
+    }
+    .book-button:hover {
+        opacity: 0.8;
+    }
+    .book-button.active.old {
+        background-color: #99c2ff;
+    }
+    .book-button.active.new {
+        background-color: #ff9999;
+    }
+    .chapter-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        width: 162px;
+    }
+    .chapter-button {
+        width: 28px;
+        height: 28px;
+        margin: 2px;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8em;
+    }
+    .chapter-button:hover {
+        background-color: #f0f0f0;
+    }
+    .chapter-button.active {
+        background-color: #d9d9d9;
+    }
+    .books-row {
+        display: flex;
+        margin-bottom: 5px;
+    }
+    .new-testament-gap {
+        margin-top: 15px;
+    }
+    .content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .search-area {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    #search-input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    .button {
+        padding: 8px 15px;
+        margin-left: 10px;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .button:hover {
+        background-color: #3367d6;
+    }
+    .output-container {
+        flex: 1;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        overflow-y: auto;
+        background-color: #fdfdfd;
+        scroll-behavior: smooth;
+        overscroll-behavior: contain;
+    }
+    #output {
+        line-height: 1.6;
+    }
+    .reference {
+        color: blue;
+        cursor: pointer;
+    }
+    .highlight {
+        background-color: yellow;
+    }
+    .verse-highlight {
+        background-color: yellow;
+    }
+    .error {
+        color: red;
+    }
+    .navigation-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 10px;
+    }
+    .format-buttons {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    .format-button {
+        padding: 5px 10px;
+        margin-right: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .format-button.active {
+        background-color: #bbb;
+    }
+    .hidden {
+        display: none;
+    }
+    .bible-verse p {
+        margin: 8px 0;
+    }
+    .chapter-title {
+        color: blue;
+    }
+    .verse-number {
+        color: blue;
+    }
