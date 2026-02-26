@@ -1,4 +1,4 @@
-    // 전역 변수
+// 전역 변수
     const bibleData = {}; 
     let currentBook = null; 
     let currentChapter = null; 
@@ -154,11 +154,11 @@
         }
     }
 
-   // 💡 책 선택 (이동할 장 번호인 targetChapter 추가)
+    // 책 선택
     function selectBook(bookName, skipSave = false, targetChapter = 1) {
         if (!skipSave) saveState();
         currentBook = bookName;
-        currentChapter = targetChapter; // 무조건 1이 아니라 요청받은 장으로 설정
+        currentChapter = targetChapter; 
         currentVerse = null;
         
         document.querySelectorAll('.book-button').forEach(btn => {
@@ -176,10 +176,8 @@
         
         createChapterButtons(bookName);
         
-        // 1장 대신 targetChapter를 화면에 표시
         displayChapter(bookName, targetChapter);
         
-        // 해당하는 장 버튼을 찾아서 활성화 (인덱스는 0부터 시작하므로 - 1)
         const chapterButtons = document.querySelectorAll('.chapter-button');
         if (chapterButtons.length > 0 && chapterButtons[targetChapter - 1]) {
             chapterButtons[targetChapter - 1].classList.add('active');
@@ -211,7 +209,7 @@
         booksRow.parentElement.insertBefore(chapterContainer, booksRow.nextSibling);
     }
 
-    // 💡 장 선택 (skipSave 매개변수 추가)
+    // 장 선택
     function selectChapter(chapter, skipSave = false) {
         if (!skipSave) saveState();
         currentChapter = chapter;
@@ -228,7 +226,7 @@
         displayChapter(currentBook, chapter);
     }
 
-    // 💡 장 표시 함수 (절 번호 클릭 기능 추가)
+    // 장 표시 함수 
     function displayChapter(bookName, chapter, highlightVerses = []) {
         if (!bibleData[bookName] || !bibleData[bookName][chapter]) {
             document.getElementById('output').innerHTML = `<p class="error">${bookName} ${chapter}장 데이터가 없습니다.</p>`;
@@ -244,7 +242,6 @@
             const isHighlighted = highlightVerses.includes(verseNum);
             const verseNumClass = isHighlighted ? 'verse-number verse-highlight' : 'verse-number';
             
-            // 💡 수정된 부분: 숫자에 커서(손가락 모양)를 추가하고, 클릭 시 executeSearch()를 실행하도록 만들었습니다!
             output += `<p><span class="${verseNumClass}" style="cursor: pointer;" onclick="executeSearch('${bookName} ${chapter}:${verseNum}')" title="${bookName} ${chapter}:${verseNum} 출력 모드로 보기">${verseNum}</span> ${verseText}</p>`;
         }
         
@@ -262,6 +259,7 @@
         }
     }
 
+    // 단어 검색 함수
     function searchWord(word) {
         if (!word.trim()) {
             document.getElementById('output').innerHTML = `<p class="error">검색할 단어를 입력해주세요.</p>`;
@@ -293,12 +291,9 @@
         }
         
         displaySearchResults(results, word, totalOccurrences);
-        // 💡 검색 결과 출력 후 스크롤을 맨 위로 이동
-        document.querySelector('.output-container').scrollTop = 0;
-        
-        addReferenceClickEvents();
     }
 
+    // 검색 결과 표시 함수
     function displaySearchResults(results, searchWord, totalOccurrences) {
         const outputDiv = document.getElementById('output');
         
@@ -339,6 +334,10 @@
         });
         
         outputDiv.innerHTML = output;
+        
+        // 스크롤 맨 위로 올리기
+        document.querySelector('.output-container').scrollTop = 0; 
+        // 클릭 이벤트 한 번만 달기
         addReferenceClickEvents();
     }
 
@@ -454,10 +453,7 @@
         }
 
         const allVerses = allGroups.flatMap(g => g.verses);
-        displayVerseResults(allVerses, allGroups);// 💡 검색 결과 출력 후 스크롤을 맨 위로 이동
-        document.querySelector('.output-container').scrollTop = 0;
-        
-        addReferenceClickEvents();
+        displayVerseResults(allVerses, allGroups);
     }
 
     function displayVerseResults(verses, verseGroups = null) {
@@ -550,11 +546,14 @@
         }
 
         document.getElementById('output').innerHTML = output;
+        
+        // 스크롤 맨 위로 올리기
+        document.querySelector('.output-container').scrollTop = 0; 
+        // 클릭 이벤트 한 번만 달기
         addReferenceClickEvents();
     }
 
     function executeSearch(query) {
-        // 💡 추가된 코드: 숨은 검색어(예: 창세기 1:1)를 검색창에 강제로 띄워줍니다.
         document.getElementById('search-input').value = query;
         bibleBooks.forEach(book => {
         if (book.name.includes(' ')) {
@@ -638,30 +637,23 @@
                 });
         });
         
-        // 💡 이전 장 버튼 클릭
         document.getElementById('prev-chapter').addEventListener('click', () => {
             if (!currentBook || !currentChapter) return;
-            
             saveState();
-            
             if (currentChapter > 1) {
                 selectChapter(currentChapter - 1, true);
             } else {
                 const currentBookIndex = bibleBooks.findIndex(b => b.name === currentBook);
                 if (currentBookIndex > 0) {
                     const prevBook = bibleBooks[currentBookIndex - 1];
-                    // 이전 책으로 넘어갈 때, 그 책의 마지막 장(prevBook.chapters)을 전달!
                     selectBook(prevBook.name, true, prevBook.chapters);
                 }
             }
         });
         
-        // 💡 다음 장 버튼 클릭
         document.getElementById('next-chapter').addEventListener('click', () => {
             if (!currentBook || !currentChapter) return;
-            
             saveState();
-            
             const maxChapter = bookToChapters[currentBook];
             if (currentChapter < maxChapter) {
                 selectChapter(currentChapter + 1, true);
@@ -669,7 +661,6 @@
                 const currentBookIndex = bibleBooks.findIndex(b => b.name === currentBook);
                 if (currentBookIndex < bibleBooks.length - 1) {
                     const nextBook = bibleBooks[currentBookIndex + 1];
-                    // 다음 책으로 넘어갈 때는 자연스럽게 1장이므로 인자 생략
                     selectBook(nextBook.name, true);
                 }
             }
@@ -677,7 +668,6 @@
         
         document.addEventListener('keydown', (e) => {
             if (document.activeElement === document.getElementById('search-input')) return;
-            
             if (e.key === 'ArrowLeft') {
                 const prevButton = document.getElementById('prev-chapter');
                 if (!prevButton.classList.contains('hidden')) prevButton.click();
@@ -705,7 +695,6 @@
         document.getElementById('double-short-quote-format').addEventListener('click', () => changeDisplayMode('double-short-quote'));
     }
 
-    // 💡 새롭게 적용된 상태 저장 (State) 함수들
     function saveState() {
         if (isRestoring) return;
         historyStack.push({
@@ -752,23 +741,19 @@
         isRestoring = false;
     }
 
-    // 💡 화면과 데이터를 완벽하게 복원하는 핵심 함수
     function restoreState(state) {
         currentBook = state.book;
         currentChapter = state.chapter;
         currentVerse = state.verse;
         displayMode = state.displayMode;
 
-        // 검색창 및 화면 내용 복원
         document.getElementById('search-input').value = state.query;
         document.getElementById('output').innerHTML = state.output;
 
-        // 디스플레이 모드 버튼 업데이트
         document.querySelectorAll('.format-button').forEach(btn => btn.classList.remove('active'));
         const activeFormatBtn = document.getElementById(`${displayMode}-format`);
         if (activeFormatBtn) activeFormatBtn.classList.add('active');
 
-        // 책 버튼 상태 복원
         document.querySelectorAll('.book-button').forEach(btn => {
             btn.classList.remove('active');
             if (btn.getAttribute('data-book') === currentBook) {
@@ -776,10 +761,8 @@
             }
         });
 
-        // 장 버튼 컨테이너 초기화
         document.querySelectorAll('.chapter-container').forEach(c => c.remove());
 
-        // 네비게이션 복원 (책이 선택된 상태라면)
         if (currentBook) {
             createChapterButtons(currentBook);
             if (currentChapter) {
@@ -791,11 +774,9 @@
             }
             document.getElementById('navigation-buttons').classList.remove('hidden');
         } else {
-            // 아무 책도 없으면 (검색 결과만 띄워져 있는 초기 상태 등)
             document.getElementById('navigation-buttons').classList.add('hidden');
         }
 
-        // 복원된 HTML 안에 있는 레퍼런스 클릭 이벤트 다시 달아주기
         addReferenceClickEvents();
     }
 
